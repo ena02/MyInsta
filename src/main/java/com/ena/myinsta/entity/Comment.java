@@ -1,19 +1,36 @@
 package com.ena.myinsta.entity;
 
-import javax.persistence.PrePersist;
+import lombok.Data;
+
+import javax.persistence.*;
 import java.time.LocalDateTime;
 
+@Data
+@Entity
 public class Comment {
 
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    @ManyToOne(fetch = FetchType.EAGER)
     private Post post;
+
+    @Column(nullable = false)
     private String username;
+
+    @Column(nullable = false)
     private Long userId;
+
+    @Column(columnDefinition = "text", nullable = false)
     private String message;
-    private LocalDateTime localDateTime;
+
+    @Column(updatable = false)
+    private LocalDateTime createdDate;
 
     @PrePersist
     protected void onCreate() {
-        this.localDateTime = LocalDateTime.now();
+        this.createdDate = LocalDateTime.now();
     }
 }
